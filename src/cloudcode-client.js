@@ -13,13 +13,11 @@ import crypto from 'crypto';
 import {
     ANTIGRAVITY_ENDPOINT_FALLBACKS,
     ANTIGRAVITY_HEADERS,
-    AVAILABLE_MODELS,
     MAX_RETRIES,
     MAX_WAIT_BEFORE_ERROR_MS,
     MIN_SIGNATURE_LENGTH
 } from './constants.js';
 import {
-    mapModelName,
     convertAnthropicToGoogle,
     convertGoogleToAnthropic
 } from './format-converter.js';
@@ -219,7 +217,7 @@ function parseResetTime(responseOrError, errorText = '') {
  * Build the wrapped request body for Cloud Code API
  */
 function buildCloudCodeRequest(anthropicRequest, projectId) {
-    const model = mapModelName(anthropicRequest.model);
+    const model = anthropicRequest.model;
     const googleRequest = convertAnthropicToGoogle(anthropicRequest);
 
     // Use stable session ID derived from first user message for cache continuity
@@ -247,7 +245,7 @@ function buildHeaders(token, model, accept = 'application/json') {
     };
 
     // Add interleaved thinking header for Claude thinking models
-    const isThinkingModel = model.toLowerCase().includes('thinking');
+    const isThinkingModel = model.toLowerCase().includes('claude') && model.toLowerCase().includes('thinking');
     if (isThinkingModel) {
         headers['anthropic-beta'] = 'interleaved-thinking-2025-05-14';
     }
@@ -273,8 +271,8 @@ function buildHeaders(token, model, accept = 'application/json') {
  * @throws {Error} If max retries exceeded or no accounts available
  */
 export async function sendMessage(anthropicRequest, accountManager) {
-    const model = mapModelName(anthropicRequest.model);
-    const isThinkingModel = model.toLowerCase().includes('thinking');
+    const model = anthropicRequest.model;
+    const isThinkingModel = model.toLowerCase().includes('claude') && model.toLowerCase().includes('thinking');
 
     // Retry loop with account failover
     // Ensure we try at least as many times as there are accounts to cycle through everyone
@@ -537,7 +535,7 @@ async function parseThinkingSSEResponse(response, originalModel) {
  * @throws {Error} If max retries exceeded or no accounts available
  */
 export async function* sendMessageStream(anthropicRequest, accountManager) {
-    const model = mapModelName(anthropicRequest.model);
+    const model = anthropicRequest.model;
 
     // Retry loop with account failover
     // Ensure we try at least as many times as there are accounts to cycle through everyone
@@ -931,19 +929,28 @@ async function* streamSSEResponse(response, originalModel) {
 
 /**
  * List available models in Anthropic API format
+ * Fetches models dynamically from the Cloud Code API
  *
- * @returns {{object: string, data: Array<{id: string, object: string, created: number, owned_by: string, description: string}>}} List of available models
+ * @param {string} token - OAuth access token
+ * @returns {Promise<{object: string, data: Array<{id: string, object: string, created: number, owned_by: string, description: string}>}>} List of available models
  */
-export function listModels() {
+export async function listModels(token) {
+    const data = await fetchAvailableModels(token);
+    if (!data || !data.models) {
+        return { object: 'list', data: [] };
+    }
+
+    const modelList = Object.entries(data.models).map(([modelId, modelData]) => ({
+        id: modelId,
+        object: 'model',
+        created: Math.floor(Date.now() / 1000),
+        owned_by: 'anthropic',
+        description: modelData.displayName || modelId
+    }));
+
     return {
         object: 'list',
-        data: AVAILABLE_MODELS.map(m => ({
-            id: m.id,
-            object: 'model',
-            created: Math.floor(Date.now() / 1000),
-            owned_by: 'anthropic',
-            description: m.description
-        }))
+        data: modelList
     };
 }
 

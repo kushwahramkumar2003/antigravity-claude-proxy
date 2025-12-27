@@ -30,7 +30,7 @@ async function runTests() {
 
     const result = await streamRequest({
         model: 'claude-opus-4-5-thinking',
-        max_tokens: 8192,
+        max_tokens: 32000,
         stream: true,
         tools,
         thinking: { type: 'enabled', budget_tokens: 16000 },
@@ -93,7 +93,7 @@ Please do this step by step, reading each file before modifying.`
 
         const result2 = await streamRequest({
             model: 'claude-opus-4-5-thinking',
-            max_tokens: 8192,
+            max_tokens: 32000,
             stream: true,
             tools,
             thinking: { type: 'enabled', budget_tokens: 16000 },

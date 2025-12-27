@@ -36,7 +36,7 @@ async function runTests() {
 
     const turn1 = await streamRequest({
         model: 'claude-sonnet-4-5-thinking',
-        max_tokens: 2048,
+        max_tokens: 16000,
         stream: true,
         system: LARGE_SYSTEM_PROMPT,
         thinking: { type: 'enabled', budget_tokens: 5000 },
@@ -90,7 +90,7 @@ async function runTests() {
 
     const turn2 = await streamRequest({
         model: 'claude-sonnet-4-5-thinking',
-        max_tokens: 2048,
+        max_tokens: 16000,
         stream: true,
         system: LARGE_SYSTEM_PROMPT,
         thinking: { type: 'enabled', budget_tokens: 5000 },

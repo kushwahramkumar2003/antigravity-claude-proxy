@@ -193,7 +193,7 @@ app.get('/account-limits', async (req, res) => {
             }
         }
 
-        const sortedModels = Array.from(allModelIds).filter(m => m.includes('claude')).sort();
+        const sortedModels = Array.from(allModelIds).sort();
 
         // Return ASCII table format
         if (format === 'table') {
@@ -352,8 +352,32 @@ app.post('/refresh-token', async (req, res) => {
 /**
  * List models endpoint (OpenAI-compatible format)
  */
-app.get('/v1/models', (req, res) => {
-    res.json(listModels());
+app.get('/v1/models', async (req, res) => {
+    try {
+        await ensureInitialized();
+        const account = accountManager.pickNext();
+        if (!account) {
+            return res.status(503).json({
+                type: 'error',
+                error: {
+                    type: 'api_error',
+                    message: 'No accounts available'
+                }
+            });
+        }
+        const token = await accountManager.getTokenForAccount(account);
+        const models = await listModels(token);
+        res.json(models);
+    } catch (error) {
+        console.error('[API] Error listing models:', error);
+        res.status(500).json({
+            type: 'error',
+            error: {
+                type: 'api_error',
+                message: error.message
+            }
+        });
+    }
 });
 
 /**

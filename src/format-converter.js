@@ -9,19 +9,8 @@
 
 import crypto from 'crypto';
 import {
-    MODEL_MAPPINGS,
-    CLAUDE_THINKING_MAX_OUTPUT_TOKENS,
     MIN_SIGNATURE_LENGTH
 } from './constants.js';
-
-/**
- * Map Anthropic model name to Antigravity model name
- * @param {string} anthropicModel - Anthropic format model name (e.g., 'claude-3-5-sonnet-20241022')
- * @returns {string} Antigravity format model name (e.g., 'claude-sonnet-4-5')
- */
-export function mapModelName(anthropicModel) {
-    return MODEL_MAPPINGS[anthropicModel] || anthropicModel;
-}
 
 /**
  * Check if a part is a thinking block
@@ -509,13 +498,6 @@ export function convertAnthropicToGoogle(anthropicRequest) {
         const thinkingBudget = thinking?.budget_tokens;
         if (thinkingBudget) {
             thinkingConfig.thinking_budget = thinkingBudget;
-
-            // Ensure maxOutputTokens is large enough when budget is specified
-            if (!googleRequest.generationConfig.maxOutputTokens ||
-                googleRequest.generationConfig.maxOutputTokens <= thinkingBudget) {
-                googleRequest.generationConfig.maxOutputTokens = CLAUDE_THINKING_MAX_OUTPUT_TOKENS;
-            }
-
             console.log('[FormatConverter] Thinking enabled with budget:', thinkingBudget);
         } else {
             console.log('[FormatConverter] Thinking enabled (no budget specified)');
@@ -725,7 +707,6 @@ export function convertGoogleToAnthropic(googleResponse, model) {
 }
 
 export default {
-    mapModelName,
     convertAnthropicToGoogle,
     convertGoogleToAnthropic
 };

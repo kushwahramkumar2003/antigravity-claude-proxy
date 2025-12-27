@@ -56,44 +56,6 @@ export const ANTIGRAVITY_HEADERS = {
     })
 };
 
-// Model name mappings: Anthropic format → Antigravity format
-export const MODEL_MAPPINGS = {
-    // Claude models
-    'claude-3-opus-20240229': 'claude-opus-4-5-thinking',
-    'claude-3-5-opus-20240229': 'claude-opus-4-5-thinking',
-    'claude-3-5-sonnet-20241022': 'claude-sonnet-4-5',
-    'claude-3-5-sonnet-20240620': 'claude-sonnet-4-5',
-    'claude-3-sonnet-20240229': 'claude-sonnet-4-5',
-    'claude-sonnet-4-5': 'claude-sonnet-4-5',
-    'claude-sonnet-4-5-thinking': 'claude-sonnet-4-5-thinking',
-    'claude-opus-4-5-thinking': 'claude-opus-4-5-thinking'
-};
-
-// Available models exposed by this proxy
-export const AVAILABLE_MODELS = [
-    {
-        id: 'claude-sonnet-4-5',
-        name: 'Claude Sonnet 4.5 (Antigravity)',
-        description: 'Claude Sonnet 4.5 via Antigravity Cloud Code',
-        context: 200000,
-        output: 64000
-    },
-    {
-        id: 'claude-sonnet-4-5-thinking',
-        name: 'Claude Sonnet 4.5 Thinking (Antigravity)',
-        description: 'Claude Sonnet 4.5 with extended thinking via Antigravity',
-        context: 200000,
-        output: 64000
-    },
-    {
-        id: 'claude-opus-4-5-thinking',
-        name: 'Claude Opus 4.5 Thinking (Antigravity)',
-        description: 'Claude Opus 4.5 with extended thinking via Antigravity',
-        context: 200000,
-        output: 64000
-    }
-];
-
 // Default project ID if none can be discovered
 export const DEFAULT_PROJECT_ID = 'rising-fact-p41fc';
 
@@ -120,7 +82,6 @@ export const MAX_ACCOUNTS = 10; // Maximum number of accounts allowed
 export const MAX_WAIT_BEFORE_ERROR_MS = 120000; // 2 minutes - throw error if wait exceeds this
 
 // Thinking model constants
-export const CLAUDE_THINKING_MAX_OUTPUT_TOKENS = 64000; // Max output tokens for thinking models
 export const MIN_SIGNATURE_LENGTH = 50; // Minimum valid thinking signature length
 
 // Google OAuth configuration (from opencode-antigravity-auth)
@@ -144,8 +105,6 @@ export const OAUTH_REDIRECT_URI = `http://localhost:${OAUTH_CONFIG.callbackPort}
 export default {
     ANTIGRAVITY_ENDPOINT_FALLBACKS,
     ANTIGRAVITY_HEADERS,
-    MODEL_MAPPINGS,
-    AVAILABLE_MODELS,
     DEFAULT_PROJECT_ID,
     TOKEN_REFRESH_INTERVAL_MS,
     REQUEST_BODY_LIMIT,
@@ -157,7 +116,6 @@ export default {
     MAX_RETRIES,
     MAX_ACCOUNTS,
     MAX_WAIT_BEFORE_ERROR_MS,
-    CLAUDE_THINKING_MAX_OUTPUT_TOKENS,
     MIN_SIGNATURE_LENGTH,
     OAUTH_CONFIG,
     OAUTH_REDIRECT_URI
