@@ -15,6 +15,7 @@ import { refreshAccessToken } from '../auth/oauth.js';
 import { getAuthStatus } from '../auth/database.js';
 import { logger } from '../utils/logger.js';
 import { isNetworkError } from '../utils/helpers.js';
+import { onboardUser, getDefaultTierId } from './onboarding.js';
 
 /**
  * Get OAuth token for an account
@@ -115,6 +116,7 @@ export async function getProjectForAccount(account, token, projectCache) {
 export async function discoverProject(token) {
     let lastError = null;
     let gotSuccessfulResponse = false;
+    let loadCodeAssistData = null;
 
     for (const endpoint of LOAD_CODE_ASSIST_ENDPOINTS) {
         try {
@@ -144,6 +146,7 @@ export async function discoverProject(token) {
 
             const data = await response.json();
             gotSuccessfulResponse = true;
+            loadCodeAssistData = data;
 
             logger.debug(`[AccountManager] loadCodeAssist response from ${endpoint}:`, JSON.stringify(data));
 
@@ -156,14 +159,27 @@ export async function discoverProject(token) {
                 return data.cloudaicompanionProject.id;
             }
 
-            // API returned success but no project - this is normal for Google One AI Pro accounts
-            // Silently fall back to default project (matches opencode-antigravity-auth behavior)
-            logger.debug(`[AccountManager] No project in response, using default: ${DEFAULT_PROJECT_ID}`);
-            return DEFAULT_PROJECT_ID;
+            // No project found - try to onboard the user
+            logger.info(`[AccountManager] No project in loadCodeAssist response, attempting onboardUser...`);
+            break;
         } catch (error) {
             lastError = error.message;
             logger.debug(`[AccountManager] loadCodeAssist error at ${endpoint}:`, error.message);
         }
+    }
+
+    // If we got a successful response but no project, try onboarding
+    if (gotSuccessfulResponse && loadCodeAssistData) {
+        const tierId = getDefaultTierId(loadCodeAssistData.allowedTiers) || 'FREE';
+        logger.info(`[AccountManager] Onboarding user with tier: ${tierId}`);
+
+        const onboardedProject = await onboardUser(token, tierId);
+        if (onboardedProject) {
+            logger.success(`[AccountManager] Successfully onboarded, project: ${onboardedProject}`);
+            return onboardedProject;
+        }
+
+        logger.warn(`[AccountManager] Onboarding failed, using default project: ${DEFAULT_PROJECT_ID}`);
     }
 
     // Only warn if all endpoints failed with errors (not just missing project)

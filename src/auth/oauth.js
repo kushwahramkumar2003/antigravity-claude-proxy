@@ -10,11 +10,12 @@ import crypto from 'crypto';
 import http from 'http';
 import {
     ANTIGRAVITY_ENDPOINT_FALLBACKS,
-    ANTIGRAVITY_HEADERS,
+    LOAD_CODE_ASSIST_HEADERS,
     OAUTH_CONFIG,
     OAUTH_REDIRECT_URI
 } from '../constants.js';
 import { logger } from '../utils/logger.js';
+import { onboardUser, getDefaultTierId } from '../account-manager/onboarding.js';
 
 /**
  * Generate PKCE code verifier and challenge
@@ -326,6 +327,8 @@ export async function getUserEmail(accessToken) {
  * @returns {Promise<string|null>} Project ID or null if not found
  */
 export async function discoverProjectId(accessToken) {
+    let loadCodeAssistData = null;
+
     for (const endpoint of ANTIGRAVITY_ENDPOINT_FALLBACKS) {
         try {
             const response = await fetch(`${endpoint}/v1internal:loadCodeAssist`, {
@@ -333,7 +336,7 @@ export async function discoverProjectId(accessToken) {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'application/json',
-                    ...ANTIGRAVITY_HEADERS
+                    ...LOAD_CODE_ASSIST_HEADERS
                 },
                 body: JSON.stringify({
                     metadata: {
@@ -347,6 +350,7 @@ export async function discoverProjectId(accessToken) {
             if (!response.ok) continue;
 
             const data = await response.json();
+            loadCodeAssistData = data;
 
             if (typeof data.cloudaicompanionProject === 'string') {
                 return data.cloudaicompanionProject;
@@ -354,8 +358,24 @@ export async function discoverProjectId(accessToken) {
             if (data.cloudaicompanionProject?.id) {
                 return data.cloudaicompanionProject.id;
             }
+
+            // No project found - try to onboard
+            logger.info('[OAuth] No project in loadCodeAssist response, attempting onboardUser...');
+            break;
         } catch (error) {
             logger.warn(`[OAuth] Project discovery failed at ${endpoint}:`, error.message);
+        }
+    }
+
+    // Try onboarding if we got a response but no project
+    if (loadCodeAssistData) {
+        const tierId = getDefaultTierId(loadCodeAssistData.allowedTiers) || 'FREE';
+        logger.info(`[OAuth] Onboarding user with tier: ${tierId}`);
+
+        const onboardedProject = await onboardUser(accessToken, tierId);
+        if (onboardedProject) {
+            logger.success(`[OAuth] Successfully onboarded, project: ${onboardedProject}`);
+            return onboardedProject;
         }
     }
 

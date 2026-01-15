@@ -64,6 +64,9 @@ export const LOAD_CODE_ASSIST_ENDPOINTS = [
     ANTIGRAVITY_ENDPOINT_DAILY
 ];
 
+// Endpoint order for onboardUser (same as generateContent fallbacks)
+export const ONBOARD_USER_ENDPOINTS = ANTIGRAVITY_ENDPOINT_FALLBACKS;
+
 // Hybrid headers specifically for loadCodeAssist
 // Uses google-api-nodejs-client User-Agent (required for project discovery on some accounts)
 export const LOAD_CODE_ASSIST_HEADERS = {
@@ -227,6 +230,7 @@ export default {
     ANTIGRAVITY_ENDPOINT_FALLBACKS,
     ANTIGRAVITY_HEADERS,
     LOAD_CODE_ASSIST_ENDPOINTS,
+    ONBOARD_USER_ENDPOINTS,
     LOAD_CODE_ASSIST_HEADERS,
     DEFAULT_PROJECT_ID,
     TOKEN_REFRESH_INTERVAL_MS,
