@@ -46,12 +46,22 @@ if (isFallbackEnabled) {
 export const FALLBACK_ENABLED = isFallbackEnabled;
 
 const PORT = process.env.PORT || DEFAULT_PORT;
+const HOST = process.env.HOST || '0.0.0.0';
+
+if (process.env.HOST) {
+    logger.info(`[Startup] Using HOST environment variable: ${process.env.HOST}`);
+}
 
 // Home directory for account storage
 const HOME_DIR = os.homedir();
 const CONFIG_DIR = path.join(HOME_DIR, '.antigravity-claude-proxy');
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, HOST, () => {
+    // Get actual bound address
+    const address = server.address();
+    const boundHost = typeof address === 'string' ? address : address.address;
+    const boundPort = typeof address === 'string' ? null : address.port;
+
     // Clear console for a clean start
     console.clear();
 
@@ -93,7 +103,8 @@ const server = app.listen(PORT, () => {
 ║           Antigravity Claude Proxy Server                    ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
-${border}  ${align(`Server and WebUI running at: http://localhost:${PORT}`)}${border}
+${border}  ${align(`Server and WebUI running at: http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`)}${border}
+${border}  ${align(`Bound to: ${boundHost}:${boundPort}`)}${border}
 ${statusSection}║                                                              ║
 ${controlSection}
 ║                                                              ║
