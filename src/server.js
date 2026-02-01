@@ -189,7 +189,7 @@ app.use((req, res, next) => {
         const logMsg = `[${req.method}] ${req.originalUrl} ${status} (${duration}ms)`;
 
         // Skip standard logging for event logging batch unless in debug mode
-        if (req.originalUrl === '/api/event_logging/batch' || req.originalUrl === '/v1/messages/count_tokens' || req.originalUrl.startsWith('/.well-known/')) {
+        if (req.originalUrl === '/api/event_logging/batch' || req.originalUrl.startsWith('/v1/messages/count_tokens') || req.originalUrl.startsWith('/.well-known/')) {
             if (logger.isDebugEnabled) {
                 logger.debug(logMsg);
             }
