@@ -138,7 +138,8 @@
                             </svg>
                         </div>
                     </th>
-                    <th class="min-w-[8rem] whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group"
+                    <th x-show="!$store.settings.compact"
+                        class="min-w-[8rem] whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group"
                         @click="$store.data.setSort('minResetTime')">
                         <div class="flex items-center gap-1">
                             <span x-text="$store.global.t('nextReset')">Next Reset</span>
@@ -150,7 +151,8 @@
                             </svg>
                         </div>
                     </th>
-                    <th class="whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group"
+                    <th x-show="!$store.settings.compact"
+                        class="whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group"
                         @click="$store.data.setSort('activeCount')">
                         <div class="flex items-center gap-1 justify-start">
                             <span x-text="$store.global.t('distribution')">Account Distribution</span>
@@ -227,17 +229,16 @@
                                          : 'min: ' + row.effectiveThresholdPct + '%'"></div>
                             </div>
                         </td>
-                        <td class="font-mono text-xs">
+                        <td x-show="!$store.settings.compact" class="font-mono text-xs">
                             <div class="tooltip tooltip-left"
                                  :data-tip="row.quotaInfo && row.quotaInfo.length > 0 ? row.quotaInfo.filter(q => q.resetTime).map(q => q.email + ': ' + q.resetTime).join('\n') : 'No reset data'">
                                 <span x-text="row.resetIn"
                                     :class="(row.resetIn && row.resetIn.indexOf('h') === -1 && row.resetIn !== '-') ? 'text-neon-purple font-bold' : 'text-gray-400'"></span>
                             </div>
                         </td>
-                        <td>
+                        <td x-show="!$store.settings.compact">
                             <div class="flex items-center justify-start gap-3">
-                                <div
-                                    class="text-[10px] font-mono text-gray-500 hidden xl:block text-left leading-tight opacity-70">
+                                <div class="text-[10px] font-mono text-gray-500 hidden xl:block text-left leading-tight opacity-70">
                                     <div
                                         x-text="$store.global.t('activeCount', {count: row.quotaInfo?.filter(q => q.pct > 0).length || 0})">
                                     </div>
@@ -324,7 +325,7 @@
                 </template>
                 <!-- Loading -->
                 <tr x-show="$store.data.loading && !$store.data.quotaRows.length">
-                    <td colspan="6" class="h-64 text-center">
+                    <td :colspan="$store.settings.compact ? 4 : 6" class="h-64 text-center">
                         <div class="flex flex-col items-center justify-center gap-3">
                             <span class="loading loading-bars loading-md text-neon-purple"></span>
                             <span class="text-xs font-mono text-gray-600 animate-pulse"
@@ -335,7 +336,7 @@
                 </tr>
                 <!-- Empty State -->
                 <tr x-show="!$store.data.initialLoad && $store.data.quotaRows.length === 0">
-                    <td colspan="6" class="py-16 text-center">
+                    <td :colspan="$store.settings.compact ? 4 : 6" class="py-16 text-center">
                         <div class="flex flex-col items-center gap-4 max-w-lg mx-auto">
                             <svg class="w-20 h-20 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
