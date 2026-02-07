@@ -128,6 +128,10 @@ window.translations.en = {
     failedToLoadServerPreset: "Failed to apply preset",
     failedToSaveServerPreset: "Failed to save preset",
     failedToDeleteServerPreset: "Failed to delete preset",
+    // Server Preset Descriptions
+    presetDefaultDesc: "Balanced settings for small account pools. Uses hybrid strategy with moderate retries and cooldowns. Best for most users with 3-5 accounts.",
+    presetManyAccountsDesc: "Optimized for large account pools (10+). Faster rotation with aggressive retries, shorter cooldowns, and higher quota protection. Maximizes throughput across many accounts.",
+    presetConservativeDesc: "Prioritizes reliability over speed. Uses sticky strategy for cache continuity, longer retries/cooldowns, and 20% quota protection. Best when stability matters most.",
     // Settings - Server
     port: "Port",
     uiVersion: "UI Version",

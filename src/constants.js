@@ -273,6 +273,7 @@ export const DEFAULT_SERVER_PRESETS = [
     {
         name: 'Default (3-5 Accounts)',
         builtIn: true,
+        descriptionKey: 'presetDefaultDesc',
         config: {
             maxRetries: 5,
             retryBaseMs: 1000,
@@ -312,6 +313,7 @@ export const DEFAULT_SERVER_PRESETS = [
     {
         name: 'Many Accounts (10+)',
         builtIn: true,
+        descriptionKey: 'presetManyAccountsDesc',
         config: {
             maxRetries: 3,
             retryBaseMs: 500,
@@ -351,6 +353,7 @@ export const DEFAULT_SERVER_PRESETS = [
     {
         name: 'Conservative',
         builtIn: true,
+        descriptionKey: 'presetConservativeDesc',
         config: {
             maxRetries: 8,
             retryBaseMs: 2000,

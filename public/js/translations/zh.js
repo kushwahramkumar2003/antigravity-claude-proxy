@@ -128,6 +128,10 @@ window.translations.zh = {
     failedToLoadServerPreset: "应用预设失败",
     failedToSaveServerPreset: "保存预设失败",
     failedToDeleteServerPreset: "删除预设失败",
+    // Server Preset Descriptions
+    presetDefaultDesc: "适合小型账号池的均衡配置。使用混合策略，适中的重试和冷却时间。适合拥有 3-5 个账号的大多数用户。",
+    presetManyAccountsDesc: "针对大型账号池（10+）优化。更快的轮换、更积极的重试、更短的冷却时间和更高的配额保护。最大化多账号吞吐量。",
+    presetConservativeDesc: "优先考虑稳定性而非速度。使用粘性策略保持缓存连续性，更长的重试/冷却时间和 20% 配额保护。适合稳定性至关重要的场景。",
     // Settings - Server
     port: "端口",
     uiVersion: "UI 版本",

@@ -107,6 +107,10 @@ window.translations.pt = {
     failedToLoadServerPreset: "Falha ao aplicar predefinição",
     failedToSaveServerPreset: "Falha ao salvar predefinição",
     failedToDeleteServerPreset: "Falha ao excluir predefinição",
+    // Server Preset Descriptions
+    presetDefaultDesc: "Configurações equilibradas para grupos pequenos de contas. Usa estratégia híbrida com tentativas e cooldowns moderados. Ideal para a maioria dos usuários com 3-5 contas.",
+    presetManyAccountsDesc: "Otimizado para grupos grandes de contas (10+). Rotação mais rápida com tentativas agressivas, cooldowns mais curtos e maior proteção de cota. Maximiza o throughput em muitas contas.",
+    presetConservativeDesc: "Prioriza confiabilidade sobre velocidade. Usa estratégia sticky para continuidade de cache, tentativas/cooldowns mais longos e proteção de cota de 20%. Ideal quando a estabilidade é mais importante.",
     // Settings - Server
     port: "Porta",
     uiVersion: "Versão da UI",

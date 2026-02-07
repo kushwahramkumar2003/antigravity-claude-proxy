@@ -1017,6 +1017,12 @@
                             <span x-show="deletingServerPreset" class="loading loading-spinner loading-xs"></span>
                         </button>
                     </div>
+                    <!-- Preset description -->
+                    <template x-if="selectedServerPreset && serverPresets.find(p => p.name === selectedServerPreset)?.descriptionKey">
+                        <p class="text-[11px] text-gray-400 mt-2 bg-space-800/50 rounded px-2.5 py-1.5 border border-space-border/30"
+                            x-text="$store.global.t(serverPresets.find(p => p.name === selectedServerPreset).descriptionKey)">
+                        </p>
+                    </template>
                     <p class="text-[10px] text-gray-600 mt-2"
                         x-text="$store.global.t('serverPresetsHint')">
                         Select a preset and click the download icon to apply it. Built-in presets (🔒) cannot be deleted.

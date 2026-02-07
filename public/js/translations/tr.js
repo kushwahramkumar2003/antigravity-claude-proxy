@@ -110,6 +110,10 @@ window.translations.tr = {
     failedToLoadServerPreset: "Ön ayar uygulanamadı",
     failedToSaveServerPreset: "Ön ayar kaydedilemedi",
     failedToDeleteServerPreset: "Ön ayar silinemedi",
+    // Server Preset Descriptions
+    presetDefaultDesc: "Küçük hesap havuzları için dengeli ayarlar. Orta düzey yeniden deneme ve bekleme süreleriyle hibrit strateji kullanır. 3-5 hesabı olan çoğu kullanıcı için idealdir.",
+    presetManyAccountsDesc: "Büyük hesap havuzları (10+) için optimize edilmiştir. Agresif yeniden denemeler, daha kısa bekleme süreleri ve daha yüksek kota koruması ile hızlı rotasyon. Birçok hesapta maksimum verim sağlar.",
+    presetConservativeDesc: "Hızdan çok güvenilirliğe öncelik verir. Önbellek sürekliliği için yapışkan strateji, daha uzun yeniden deneme/bekleme süreleri ve %20 kota koruması kullanır. Kararlılığın en önemli olduğu durumlar için idealdir.",
     // Settings - Server
     port: "Port",
     uiVersion: "Arayüz Sürümü",
