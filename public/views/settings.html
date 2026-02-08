@@ -1279,7 +1279,7 @@
                             x-text="editingPresetMode ? ($store.global.t('editServerPreset') || 'Edit Preset') : $store.global.t('saveServerPreset')">Save Server Preset</h3>
                         <p class="text-xs text-gray-500 mb-4"
                             x-text="editingPresetMode ? ($store.global.t('editServerPresetDesc') || 'Update the preset name or description.') : $store.global.t('saveServerPresetDesc')"></p>
-                        <input type="text" x-model="newServerPresetName"
+                        <input type="text" x-model="newServerPresetName" maxlength="50"
                             class="input input-sm w-full font-mono text-xs !bg-space-800 !border-space-border !text-white mb-2"
                             :placeholder="$store.global.t('presetNamePlaceholder')"
                             @keydown.enter.prevent="editingPresetMode ? executeEditServerPreset() : executeSaveServerPreset(newServerPresetName)">
