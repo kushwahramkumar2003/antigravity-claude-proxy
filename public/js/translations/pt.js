@@ -399,6 +399,9 @@ window.translations.pt = {
     weightTokens: "Peso Tokens",
     weightQuota: "Peso Cota",
     weightLru: "Peso LRU",
+    // Mensagens de erro de presets
+    presetNameRequired: "Nome do preset é obrigatório",
+    deletePresetConfirm: "Excluir preset \"{name}\"?",
     // Dropdown de Modelo
     clearSelection: "Limpar seleção",
 };
