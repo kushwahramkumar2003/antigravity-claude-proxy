@@ -8,7 +8,7 @@ document.addEventListener('alpine:init', () => {
         showExhausted: true,
         showHiddenModels: false,
         showAllAccounts: false,
-        showConfigWarning: false,
+        showConfigWarning: true,
         compact: false,
         redactMode: false,
         placeholderMode: false,
