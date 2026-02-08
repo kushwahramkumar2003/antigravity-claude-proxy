@@ -55,22 +55,22 @@ window.AppConstants.VALIDATION = {
     LOG_LIMIT_MAX: 10000,
 
     // Retry configuration ranges
-    MAX_RETRIES_MIN: 0,
+    MAX_RETRIES_MIN: 1,
     MAX_RETRIES_MAX: 20,
 
     RETRY_BASE_MS_MIN: 100,
     RETRY_BASE_MS_MAX: 10000,
 
     RETRY_MAX_MS_MIN: 1000,
-    RETRY_MAX_MS_MAX: 60000,
+    RETRY_MAX_MS_MAX: 120000,
 
-    // Cooldown range (0 - 10 minutes)
-    DEFAULT_COOLDOWN_MIN: 0,
-    DEFAULT_COOLDOWN_MAX: 600000,
+    // Cooldown range (1s - 5 minutes)
+    DEFAULT_COOLDOWN_MIN: 1000,
+    DEFAULT_COOLDOWN_MAX: 300000,
 
-    // Max wait threshold (1 - 30 minutes)
-    MAX_WAIT_MIN: 60000,
-    MAX_WAIT_MAX: 1800000,
+    // Max wait threshold (0 - 10 minutes)
+    MAX_WAIT_MIN: 0,
+    MAX_WAIT_MAX: 600000,
 
     // Max accounts range (1 - 100)
     MAX_ACCOUNTS_MIN: 1,
